@@ -1,10 +1,10 @@
 package com.guiferrini.proposta.propostas;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -21,10 +21,17 @@ public class PropostaController {
     @PersistenceContext
     EntityManager entityManager;
 
+    @Autowired
+    private ValidadorPropostaDuplicada validadorPropostaDuplicada;
+
     @PostMapping
     @Transactional
-    public ResponseEntity<Proposta> cria(@Valid @RequestBody PropostaRequest propostaRequest,
+    public ResponseEntity<?> cria(@Valid @RequestBody PropostaRequest propostaRequest,
                                          UriComponentsBuilder builder){
+
+        if(!validadorPropostaDuplicada.validadoDocumento(propostaRequest)){
+            return ResponseEntity.status(422).body("ERRO. Já existe uma Porposta com esse Documento.");
+        }
 
         Proposta obj = propostaRequest.toModel();
         entityManager.persist(obj);
@@ -34,9 +41,8 @@ public class PropostaController {
         if(obj instanceof Proposta){
             return ResponseEntity.created(builder.path("/propostas/{id}").buildAndExpand(obj.getId()).toUri()).build();
         } else {
-            return ResponseEntity.status(400).body(null);
+            //return ResponseEntity.status(400).body(null);
+            return ResponseEntity.badRequest().body(null);
         }
-
-        //return ResponseEntity.created(uri).build();
     }
 }
