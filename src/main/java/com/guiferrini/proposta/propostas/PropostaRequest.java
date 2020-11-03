@@ -1,5 +1,8 @@
 package com.guiferrini.proposta.propostas;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.persistence.EntityManager;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -26,6 +29,8 @@ public class PropostaRequest {
     @NotNull(message = "Salário é obrigatorio")
     @Positive
     private BigDecimal salario;
+
+    private final Logger logger = LoggerFactory.getLogger(PropostaRequest.class);
 
     @Deprecated
     public PropostaRequest(){
@@ -66,7 +71,7 @@ public class PropostaRequest {
     public Proposta toModel(){
 
         Proposta proposta = new Proposta(documento, email, nome, endereco, salario);
-
+        logger.info("PropostaRequest - toModel()");
         return proposta;
     }
 }

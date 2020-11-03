@@ -1,6 +1,8 @@
 package com.guiferrini.proposta.propostas;
 
 import ch.qos.logback.core.net.SyslogOutputStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,8 @@ import java.net.URI;
 @RequestMapping("/propostas")
 public class PropostaController {
 
+    private final Logger logger = LoggerFactory.getLogger(PropostaController.class);
+
     @PersistenceContext
     EntityManager entityManager;
 
@@ -30,7 +34,8 @@ public class PropostaController {
     public ResponseEntity<?> cria(@Valid @RequestBody PropostaRequest propostaRequest,
                                          UriComponentsBuilder builder){
         if(!validadorPropostaDuplicada.validadoDocumento(propostaRequest)){
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("ERRO. Já existe uma Porposta com esse Documento.");
+            logger.error("ERRO - Criação Proposta - Já existe uma Porposta com esse Documento n° {}", propostaRequest.getDocumento());
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("ERRO. Já existe uma Porposta com esse Documento."); //retorno 422
         }
 
         Proposta obj = propostaRequest.toModel();
@@ -42,6 +47,7 @@ public class PropostaController {
             return ResponseEntity.created(builder.path("/propostas/{id}").buildAndExpand(obj.getId()).toUri()).build();
         } else {
             //return ResponseEntity.status(400).body(null);
+            logger.error("ERRO - Criação Proposta");
             return ResponseEntity.badRequest().body(null);
         }
     }
