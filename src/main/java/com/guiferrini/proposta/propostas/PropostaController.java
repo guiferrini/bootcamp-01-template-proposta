@@ -2,6 +2,7 @@ package com.guiferrini.proposta.propostas;
 
 import ch.qos.logback.core.net.SyslogOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -28,9 +29,8 @@ public class PropostaController {
     @Transactional
     public ResponseEntity<?> cria(@Valid @RequestBody PropostaRequest propostaRequest,
                                          UriComponentsBuilder builder){
-
         if(!validadorPropostaDuplicada.validadoDocumento(propostaRequest)){
-            return ResponseEntity.status(422).body("ERRO. Já existe uma Porposta com esse Documento.");
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("ERRO. Já existe uma Porposta com esse Documento.");
         }
 
         Proposta obj = propostaRequest.toModel();
