@@ -1,5 +1,8 @@
 package com.guiferrini.proposta.propostas;
 
+import com.guiferrini.proposta.servicoWeb.Enums.ResultadoComOuSem;
+import com.guiferrini.proposta.servicoWeb.SolicitacaoRequest;
+import com.guiferrini.proposta.servicoWeb.Enums.StatusAvaliacaoProposta;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.util.Assert;
 
@@ -9,6 +12,11 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
+
+import static com.guiferrini.proposta.servicoWeb.Enums.ResultadoComOuSem.COM_RESTRICAO;
+import static com.guiferrini.proposta.servicoWeb.Enums.ResultadoComOuSem.SEM_RESTRICAO;
+import static com.guiferrini.proposta.servicoWeb.Enums.StatusAvaliacaoProposta.ELEGIVEL;
+import static com.guiferrini.proposta.servicoWeb.Enums.StatusAvaliacaoProposta.NAO_ELEGIVEL;
 
 @Entity
 @Table(name="proposta")
@@ -38,6 +46,9 @@ public class Proposta {
     @Positive
     private BigDecimal salario;
 
+    @Enumerated //informa q eh um Emun
+    private StatusAvaliacaoProposta status = StatusAvaliacaoProposta.AGUARDANDO_AVALIACAO;
+
     @Deprecated
     public Proposta(){
     }
@@ -57,5 +68,32 @@ public class Proposta {
     public String getId() {
         //Assert.notNull(id,"O objeto precisa estar salvo para invocar o getId");
         return id;
+    }
+
+    public String getDocumento() {
+        return documento;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public StatusAvaliacaoProposta getStatus() {
+        return status;
+    }
+
+    public void aplicaResultadoAnalise(ResultadoComOuSem resultadoComOuSem) {
+        if (resultadoComOuSem == COM_RESTRICAO) {
+            status = NAO_ELEGIVEL;
+            return;
+        }
+
+        if (resultadoComOuSem == SEM_RESTRICAO) {
+            status = ELEGIVEL;
+            return;
+        }
+
+        //com erro... ?! Validar
+        //throw new IllegalArgumentException("Argumento inválido para a atualização do status da proposta!");
     }
 }

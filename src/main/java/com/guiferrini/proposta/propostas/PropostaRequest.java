@@ -1,5 +1,6 @@
 package com.guiferrini.proposta.propostas;
 
+import com.guiferrini.proposta.servicoWeb.Enums.StatusAvaliacaoProposta;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
