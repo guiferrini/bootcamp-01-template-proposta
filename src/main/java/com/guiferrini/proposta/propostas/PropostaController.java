@@ -1,5 +1,6 @@
 package com.guiferrini.proposta.propostas;
 
+import com.guiferrini.proposta.services.PropostaServices;
 import com.guiferrini.proposta.servicoWeb.Enums.ResultadoComOuSem;
 import com.guiferrini.proposta.servicoWeb.OperacaoServicoWebFeign;
 import com.guiferrini.proposta.servicoWeb.Request.SolicitacaoRequest;
@@ -36,6 +37,9 @@ public class PropostaController {
     @Autowired
     private OperacaoServicoWebFeign operacaoServicoWebFeign;
 
+    @Autowired
+    private PropostaServices propostaServices;
+
     @PostMapping
     @Transactional
     public ResponseEntity<?> cria(@Valid @RequestBody PropostaRequest propostaRequest,
@@ -48,25 +52,7 @@ public class PropostaController {
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("ERRO. Já existe uma Porposta com esse Documento."); //retorno 422
         }
 
-        Proposta obj = propostaRequest.toModel();
-        logger.info("Proposta salva no BD - ultimos digitos do documento {}", digitosFinaisDocumento);
-        //executorTransacao.salvaEcomita(obj);
-        entityManager.persist(obj);
-
-        var solicitacaoRequest = new SolicitacaoRequest(obj);
-        //System.out.println("solicitacaoRequest: " + solicitacaoRequest);
-
-        //Tradando o Erro, COM_RESTRICAO... Criar service ou em outro lugar...
-        try{
-            var resultadoAnalise = operacaoServicoWebFeign.analiseDadosFinanceiros(solicitacaoRequest);
-            obj.aplicaResultadoAnalise(resultadoAnalise.getResultadoComOuSem());
-        } catch (FeignException.UnprocessableEntity exception){
-            obj.aplicaResultadoAnalise(ResultadoComOuSem.COM_RESTRICAO);
-        }
-
-        logger.info("Proposta alterada: COM ou SEM restrição no BD - ultimos digitos do documento {}", digitosFinaisDocumento);
-        executorTransacao.salvaEcomita(obj);
-        //entityManager.merge(obj);
+        Proposta obj = propostaServices.salvaProposta(propostaRequest); //Chama Service - faz verificação COM/SEM RESTRICAO - salva/altera no BD
 
         if(obj instanceof Proposta){
             logger.info("Proposta criada com sucesso - ultimos digitos do documento {} - ID Proposta {}", digitosFinaisDocumento, obj.getId());
