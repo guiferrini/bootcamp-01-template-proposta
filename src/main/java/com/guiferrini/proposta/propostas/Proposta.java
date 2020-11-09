@@ -45,7 +45,7 @@ public class Proposta {
     private BigDecimal salario;
 
     @Enumerated //informa q eh um Emun
-    private StatusAvaliacaoProposta status = StatusAvaliacaoProposta.AGUARDANDO_AVALIACAO;
+    private StatusAvaliacaoProposta status = ELEGIVEL;
 
     @Deprecated
     public Proposta(){

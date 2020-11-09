@@ -63,4 +63,24 @@ public class PropostaController {
             return ResponseEntity.badRequest().body(null);
         }
     }
+
+    @GetMapping("/{id}")
+    @Transactional
+    public ResponseEntity<?> busca(@PathVariable("id") String id){
+
+        logger.info("Buscando Proposta pelo ID {}", id);
+        Proposta obj = entityManager.find(Proposta.class, id);
+
+        //alternativa p n usar 'null' -> if(obj.getId().isEmpty()){...}
+        if(obj == null){
+            logger.error("ERRO. Não existe Proposta para o ID {}", id);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ERRO. Proposta não localizada."); //500
+        }
+
+        PropostaResponse propostaResponse = new PropostaResponse(obj);
+
+        logger.info("Proposta {} Localizada com Sucesso.", id);
+        return ResponseEntity.status(HttpStatus.OK).body(propostaResponse); //200
+
+    }
 }
