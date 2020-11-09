@@ -1,10 +1,8 @@
 package com.guiferrini.proposta.propostas;
 
 import com.guiferrini.proposta.servicoWeb.Enums.ResultadoComOuSem;
-import com.guiferrini.proposta.servicoWeb.SolicitacaoRequest;
 import com.guiferrini.proposta.servicoWeb.Enums.StatusAvaliacaoProposta;
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;

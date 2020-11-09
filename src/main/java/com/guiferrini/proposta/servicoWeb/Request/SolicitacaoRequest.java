@@ -1,4 +1,4 @@
-package com.guiferrini.proposta.servicoWeb;
+package com.guiferrini.proposta.servicoWeb.Request;
 
 import com.guiferrini.proposta.propostas.Proposta;
 
