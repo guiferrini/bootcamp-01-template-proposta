@@ -1,10 +1,7 @@
 package com.guiferrini.proposta.propostas;
 
 import com.guiferrini.proposta.services.PropostaServices;
-import com.guiferrini.proposta.servicoWeb.Enums.ResultadoComOuSem;
 import com.guiferrini.proposta.servicoWeb.OperacaoServicoWebFeign;
-import com.guiferrini.proposta.servicoWeb.Request.SolicitacaoRequest;
-import feign.FeignException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,15 +18,12 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/propostas")
-public class PropostaController {
+public class CadastraPropostaController {
 
-    private final Logger logger = LoggerFactory.getLogger(PropostaController.class);
+    private final Logger logger = LoggerFactory.getLogger(CadastraPropostaController.class);
 
     @PersistenceContext
     EntityManager entityManager;
-
-    @Autowired
-    private ExecutorTransacao executorTransacao;
 
     @Autowired
     private ValidadorPropostaDuplicada validadorPropostaDuplicada;
@@ -57,30 +51,12 @@ public class PropostaController {
         if(obj instanceof Proposta){
             logger.info("Proposta criada com sucesso - ultimos digitos do documento {} - ID Proposta {}", digitosFinaisDocumento, obj.getId());
             return ResponseEntity.created(builder.path("/propostas/{id}").buildAndExpand(obj.getId()).toUri()).build();
-        } else {
+        }
+
+        else {
             //return ResponseEntity.status(400).body(null);
             logger.error("ERRO - Criação Proposta - ultimos digitos do documento {}", digitosFinaisDocumento);
             return ResponseEntity.badRequest().body(null);
         }
-    }
-
-    @GetMapping("/{id}")
-    @Transactional
-    public ResponseEntity<?> busca(@PathVariable("id") String id){
-
-        logger.info("Buscando Proposta pelo ID {}", id);
-        Proposta obj = entityManager.find(Proposta.class, id);
-
-        //alternativa p n usar 'null' -> if(obj.getId().isEmpty()){...}
-        if(obj == null){
-            logger.error("ERRO. Não existe Proposta para o ID {}", id);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ERRO. Proposta não localizada."); //500
-        }
-
-        PropostaDeFatoResponse propostaResponse = new PropostaDeFatoResponse(obj);
-
-        logger.info("Proposta {} Localizada com Sucesso.", id);
-        return ResponseEntity.status(HttpStatus.OK).body(propostaResponse); //200
-
     }
 }

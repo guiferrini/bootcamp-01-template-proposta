@@ -1,7 +1,6 @@
 package com.guiferrini.proposta.servicoWeb;
 
-import com.guiferrini.proposta.propostas.PropostaResponse;
-import com.guiferrini.proposta.servicoWeb.Request.ResultadoAnaliseRequest;
+import com.guiferrini.proposta.servicoWeb.Response.SolicitacaoAnaliseFinanceira;
 import com.guiferrini.proposta.servicoWeb.Request.SolicitacaoRequest;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,7 +12,6 @@ import org.springframework.cloud.openfeign.FeignClient;
 public interface OperacaoServicoWebFeign {
 
     @PostMapping("/api/solicitacao")
-    //public String avalia(Solicitacao solicitacao);
-    PropostaResponse analiseDadosFinanceiros(@RequestBody SolicitacaoRequest solicitacaoRequest);
+    SolicitacaoAnaliseFinanceira analiseDadosFinanceiros(@RequestBody SolicitacaoRequest solicitacaoRequest);
 
 }

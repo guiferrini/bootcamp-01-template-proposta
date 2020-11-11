@@ -12,5 +12,4 @@ import java.util.List;
 public interface PropostaRepository extends JpaRepository<Proposta, String> {
 
     List<Proposta> findAllByStatusAndCartaoNull(StatusAvaliacaoProposta status);
-    //List<Proposta> findAllByStatus(StatusAvaliacaoProposta status);
 }

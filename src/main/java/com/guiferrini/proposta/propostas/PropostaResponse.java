@@ -3,53 +3,41 @@ package com.guiferrini.proposta.propostas;
 import com.guiferrini.proposta.servicoWeb.Enums.ResultadoComOuSem;
 import com.guiferrini.proposta.servicoWeb.Enums.StatusAvaliacaoProposta;
 
+// Retorno serviço de Cartão
+
 public class PropostaResponse {
 
     private String documento;
     private String nome;
-    private ResultadoComOuSem resultadoSolicitacao;
+    private StatusAvaliacaoProposta status;
     private String idProposta;
 
     @Deprecated
     public PropostaResponse(){
     }
 
-    public PropostaResponse(String documento, String nome, ResultadoComOuSem resultadoSolicitacao, String idProposta) {
-        this.documento = documento;
-        this.nome = nome;
-        this.resultadoSolicitacao = resultadoSolicitacao;
-        this.idProposta = idProposta;
+    public PropostaResponse(Proposta proposta) { //colocar tds valores
+        this.documento = proposta.getDocumento();
+        this.nome = proposta.getNome();
+        this.status = proposta.getStatus();
+        this.idProposta = proposta.getId();
     }
+    
 
     public String getDocumento() {
         return documento;
-    }
-
-    public void setDocumento(String documento) {
-        this.documento = documento;
     }
 
     public String getNome() {
         return nome;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public ResultadoComOuSem getResultadoSolicitacao() {
-        return resultadoSolicitacao;
-    }
-
-    public void setResultadoSolicitacao(ResultadoComOuSem resultadoSolicitacao) {
-        this.resultadoSolicitacao = resultadoSolicitacao;
+    public StatusAvaliacaoProposta getStatus() {
+        return status;
     }
 
     public String getIdProposta() {
         return idProposta;
     }
 
-    public void setIdProposta(String idProposta) {
-        this.idProposta = idProposta;
-    }
 }

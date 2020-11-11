@@ -30,6 +30,4 @@ public enum ResultadoComOuSem {
 //    public StatusAvaliacaoProposta getStatusAvaliacaoProposta() {
 //        return statusAvaliacaoProposta;
 //    }
-
-
 }

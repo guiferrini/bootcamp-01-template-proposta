@@ -12,9 +12,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 
-import static com.guiferrini.proposta.servicoWeb.Enums.ResultadoComOuSem.COM_RESTRICAO;
-import static com.guiferrini.proposta.servicoWeb.Enums.ResultadoComOuSem.SEM_RESTRICAO;
-import static com.guiferrini.proposta.servicoWeb.Enums.StatusAvaliacaoProposta.ELEGIVEL;
 import static com.guiferrini.proposta.servicoWeb.Enums.StatusAvaliacaoProposta.NAO_ELEGIVEL;
 
 @Entity
@@ -65,7 +62,7 @@ public class Proposta {
         this.nome = nome;
         this.endereco = endereco;
         this.salario = salario;
-        this.status = StatusAvaliacaoProposta.AGUARDANDO_AVALIACAO;
+        this.status = NAO_ELEGIVEL;
     }
 
     public String getId() {
@@ -89,7 +86,7 @@ public class Proposta {
         return cartao;
     }
 
-//    NÃO UTILIZAR - BOAS PRATIOCAS EST DENTRO DO 'RESULTADOCOMOUSEM'
+//    NÃO UTILIZAR - BOAS PRATICAS -> NO 'RESULTADOCOMOUSEM'
 //    public void aplicaResultadoAnalise(ResultadoComOuSem resultadoComOuSem) {
 //        System.out.println(resultadoComOuSem);
 //        if (resultadoComOuSem == COM_RESTRICAO) {
@@ -115,18 +112,4 @@ public class Proposta {
     public void adicionaCartao(Cartao cartao){
         this.cartao = cartao;
     }
-
-//    @Override
-//    public String toString() {
-//        return "Proposta{" +
-//                "id='" + id + '\'' +
-//                ", documento='" + documento + '\'' +
-//                ", email='" + email + '\'' +
-//                ", nome='" + nome + '\'' +
-//                ", endereco='" + endereco + '\'' +
-//                ", salario=" + salario +
-//                ", status=" + status +
-//                ", cartao=" + cartao +
-//                '}';
-//    }
 }

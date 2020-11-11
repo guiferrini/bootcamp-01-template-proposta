@@ -10,8 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -49,14 +47,4 @@ public class Cartao {
     public String getId() {
         return id;
     }
-
-    //    @Override
-//    public String toString() {
-//        return "Cartao{" +
-//                "id='" + id + '\'' +
-//                ", idCartaoEmitido=" + idCartaoEmitido +
-//                ", emitidoEm=" + emitidoEm +
-//                ", titular='" + titular + '\'' +
-//                '}';
-//    }
 }

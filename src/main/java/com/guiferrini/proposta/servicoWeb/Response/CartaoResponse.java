@@ -8,11 +8,8 @@ import java.util.UUID;
 public class CartaoResponse {
 
     private UUID id;
-
     private LocalDateTime emitidoEm;
-
     private String titular;
-
     private String idProposta;
 
     @Deprecated
