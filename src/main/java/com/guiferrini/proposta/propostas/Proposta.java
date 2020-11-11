@@ -1,5 +1,6 @@
 package com.guiferrini.proposta.propostas;
 
+import com.guiferrini.proposta.servicoWeb.Entity.Cartao;
 import com.guiferrini.proposta.servicoWeb.Enums.ResultadoComOuSem;
 import com.guiferrini.proposta.servicoWeb.Enums.StatusAvaliacaoProposta;
 import org.hibernate.annotations.GenericGenerator;
@@ -44,8 +45,11 @@ public class Proposta {
     @Positive
     private BigDecimal salario;
 
-    @Enumerated //informa q eh um Emun
-    private StatusAvaliacaoProposta status = ELEGIVEL;
+    @Enumerated(EnumType.STRING) //informa q eh um Emun
+    private StatusAvaliacaoProposta status ;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Cartao cartao;
 
     @Deprecated
     public Proposta(){
@@ -61,6 +65,7 @@ public class Proposta {
         this.nome = nome;
         this.endereco = endereco;
         this.salario = salario;
+        this.status = StatusAvaliacaoProposta.AGUARDANDO_AVALIACAO;
     }
 
     public String getId() {
@@ -80,18 +85,48 @@ public class Proposta {
         return status;
     }
 
-    public void aplicaResultadoAnalise(ResultadoComOuSem resultadoComOuSem) {
-        if (resultadoComOuSem == COM_RESTRICAO) {
-            status = NAO_ELEGIVEL;
-            return;
-        }
-
-        if (resultadoComOuSem == SEM_RESTRICAO) {
-            status = ELEGIVEL;
-            return;
-        }
-
-        //com erro... ?! Validar
-        //throw new IllegalArgumentException("Argumento inválido para a atualização do status da proposta!");
+    public Cartao getCartao() {
+        return cartao;
     }
+
+//    NÃO UTILIZAR - BOAS PRATIOCAS EST DENTRO DO 'RESULTADOCOMOUSEM'
+//    public void aplicaResultadoAnalise(ResultadoComOuSem resultadoComOuSem) {
+//        System.out.println(resultadoComOuSem);
+//        if (resultadoComOuSem == COM_RESTRICAO) {
+//            setStatus(NAO_ELEGIVEL);
+//
+//        }else if (resultadoComOuSem == SEM_RESTRICAO) {
+//            setStatus(ELEGIVEL);
+//
+//        }
+//
+//        //com erro... ?! Validar
+//        throw new IllegalArgumentException("Argumento inválido para a atualização do status da proposta!");
+//    }
+
+    public void setStatus(StatusAvaliacaoProposta status) {
+        this.status = status;
+    }
+
+    public void setCartao(Cartao cartao) {
+        this.cartao = cartao;
+    }
+
+    public void adicionaCartao(Cartao cartao){
+        this.cartao = cartao;
+    }
+
+//    @Override
+//    public String toString() {
+//        return "Proposta{" +
+//                "id='" + id + '\'' +
+//                ", documento='" + documento + '\'' +
+//                ", email='" + email + '\'' +
+//                ", nome='" + nome + '\'' +
+//                ", endereco='" + endereco + '\'' +
+//                ", salario=" + salario +
+//                ", status=" + status +
+//                ", cartao=" + cartao +
+//                '}';
+//    }
 }

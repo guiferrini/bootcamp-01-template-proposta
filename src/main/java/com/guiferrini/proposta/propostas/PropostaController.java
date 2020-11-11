@@ -77,7 +77,7 @@ public class PropostaController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ERRO. Proposta não localizada."); //500
         }
 
-        PropostaResponse propostaResponse = new PropostaResponse(obj);
+        PropostaDeFatoResponse propostaResponse = new PropostaDeFatoResponse(obj);
 
         logger.info("Proposta {} Localizada com Sucesso.", id);
         return ResponseEntity.status(HttpStatus.OK).body(propostaResponse); //200
