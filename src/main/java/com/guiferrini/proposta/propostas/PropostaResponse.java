@@ -3,7 +3,7 @@ package com.guiferrini.proposta.propostas;
 import com.guiferrini.proposta.servicoWeb.Enums.ResultadoComOuSem;
 import com.guiferrini.proposta.servicoWeb.Enums.StatusAvaliacaoProposta;
 
-// Retorno serviço de Cartão
+// Retorno Proposta com info serviço de Cartão
 
 public class PropostaResponse {
 

@@ -44,7 +44,7 @@ public class ConsultaPropostaController {
         //alternativa p n usar 'null' -> if(obj.getId().isEmpty()){...}
         if(obj == null){
             logger.error("ERRO. Não existe Proposta para o ID {}", id);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ERRO. Proposta não localizada."); //500
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ERRO. Proposta não localizada."); //400
         }
 
         PropostaResponse propostaResponse = new PropostaResponse(obj);
