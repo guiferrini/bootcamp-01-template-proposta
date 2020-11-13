@@ -1,16 +1,16 @@
 package com.guiferrini.proposta.servicoWeb.Entity;
 
+import com.guiferrini.proposta.biometria.Biometria;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity(name="cartao")
@@ -32,6 +32,9 @@ public class Cartao {
     @NotBlank
     private String titular;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    private Set<Biometria> biometria = new HashSet<>();
+
     @Deprecated
     public Cartao(){
     }
@@ -46,5 +49,9 @@ public class Cartao {
 
     public String getId() {
         return id;
+    }
+
+    public void adicionaBiometria(Biometria novaBiometria){
+        biometria.add(novaBiometria);
     }
 }
